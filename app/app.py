@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import random
 from datetime import date
 
 # =========================
@@ -112,22 +113,23 @@ st.sidebar.markdown("<p style='color: #64748b; font-size: 0.875rem; margin-top: 
 st.sidebar.divider()
 
 with st.sidebar.expander("1. Demographics", expanded=True):
-    age = st.number_input("Age", min_value=0, max_value=120, value=30)
+    patient_id_input = st.text_input("Patient ID (Optional)", placeholder="Auto-generated if empty")
+    age = st.number_input("Age", min_value=0, max_value=120, value=0)
     gender = st.selectbox("Gender", ["Male", "Female"])
 
 with st.sidebar.expander("2. Bilirubin Panel", expanded=False):
-    tb = st.number_input("Total Bilirubin (mg/dL)", value=1.0, step=0.1)
-    db = st.number_input("Direct Bilirubin (mg/dL)", value=0.3, step=0.1)
+    tb = st.number_input("Total Bilirubin (mg/dL)", value=0.0, step=0.1)
+    db = st.number_input("Direct Bilirubin (mg/dL)", value=0.0, step=0.1)
 
 with st.sidebar.expander("3. Hepatic Enzymes", expanded=False):
-    alkphos = st.number_input("Alk. Phosphatase (U/L)", value=200, step=1)
-    sgpt = st.number_input("SGPT (ALT) (U/L)", value=30, step=1)
-    sgot = st.number_input("SGOT (AST) (U/L)", value=40, step=1)
+    alkphos = st.number_input("Alk. Phosphatase (U/L)", value=0, step=1)
+    sgpt = st.number_input("SGPT (ALT) (U/L)", value=0, step=1)
+    sgot = st.number_input("SGOT (AST) (U/L)", value=0, step=1)
 
 with st.sidebar.expander("4. Proteins", expanded=False):
-    tp = st.number_input("Total Protein (g/dL)", value=6.5, step=0.1)
-    alb = st.number_input("Albumin (g/dL)", value=3.2, step=0.1)
-    ag_ratio = st.number_input("A/G Ratio", value=0.9, step=0.1)
+    tp = st.number_input("Total Protein (g/dL)", value=0.0, step=0.1)
+    alb = st.number_input("Albumin (g/dL)", value=0.0, step=0.1)
+    ag_ratio = st.number_input("A/G Ratio", value=0.0, step=0.1)
 
 st.sidebar.write("")
 predict_clicked = st.sidebar.button("Generate Report", use_container_width=True, type="primary")
@@ -140,16 +142,27 @@ with col1:
     st.markdown("<h1 style='font-weight: 800; color: #1e3a8a; margin-bottom: 0; padding-top: 0;'>Liver Function Assessment</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #64748b; font-size: 1.125rem; font-weight: 500; margin-top: 0;'>AI-Assisted Diagnostic Tool</p>", unsafe_allow_html=True)
 with col2:
+    if 'id_suffix' not in st.session_state:
+        st.session_state.id_suffix = f"{random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')}-{random.randint(1000, 9999)}"
+    
+    auto_id = f"#{int(age)}{st.session_state.id_suffix}"
+    display_patient_id = patient_id_input.strip() if patient_id_input.strip() else auto_id
+
     st.markdown(f"""
     <div style='background-color: white; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; text-align: right; font-size: 0.875rem; color: #64748b; margin-top: 1rem;'>
         <div>Date: <span style='font-weight: 700; color: #1e293b;'>{date.today().strftime("%b %d, %Y")}</span></div>
-        <div>Patient ID: <span style='font-weight: 700; color: #1e293b; font-family: monospace;'>#A-8472</span></div>
+        <div>Patient ID: <span style='font-weight: 700; color: #1e293b; font-family: monospace;'>{display_patient_id}</span></div>
     </div>
     """, unsafe_allow_html=True)
 
 st.write("")
 
 if predict_clicked and model is not None:
+    # 0. Input Validation
+    if age == 0 or tb == 0.0 or tp == 0.0:
+        st.error("⚠️ **Invalid Data:** Please enter real laboratory values. Parameters like Age, Bilirubin, and Protein cannot be 0 for a real patient.")
+        st.stop()
+
     # 1. Prepare Data
     input_data = pd.DataFrame([{
         "Age": age,
