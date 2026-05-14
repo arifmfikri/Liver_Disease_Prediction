@@ -4,7 +4,6 @@ Aplikasi Machine Learning berbasis web untuk memprediksi risiko penyakit liver m
  
 🔗 **Live Demo:** [liver-disease-predict.streamlit.app](https://liver-disease-predict.streamlit.app/)
  
----
  
 ## 📖 Deskripsi Proyek
  
@@ -12,7 +11,6 @@ Proyek ini merupakan sistem prediksi penyakit liver yang dibangun dengan pendeka
  
 Model dilatih menggunakan **XGBoost Classifier** dan di-deploy sebagai aplikasi web interaktif menggunakan **Streamlit**.
  
----
  
 ## ✨ Fitur Utama
  
@@ -21,7 +19,6 @@ Model dilatih menggunakan **XGBoost Classifier** dan di-deploy sebagai aplikasi 
 - ⚡ Antarmuka web yang ringan dan responsif
 - 🤖 Model Machine Learning XGBoost yang terlatih
 - 🧪 Notebook eksplorasi dan analisis data lengkap
----
  
 ## 📁 Struktur Folder
  
@@ -50,7 +47,6 @@ Liver_Disease_Prediction/
 └── requirements.txt                       # Daftar dependensi Python
 ```
  
----
  
 ## 🛠️ Requirements
  
@@ -62,8 +58,7 @@ Liver_Disease_Prediction/
 | `pandas`       | Manipulasi dan analisis data          |
 | `numpy`        | Komputasi numerik                     |
 | `joblib`       | Menyimpan dan memuat model            |
- 
----
+
  
 ## 🚀 Cara Menjalankan Secara Lokal
  
@@ -96,7 +91,6 @@ streamlit run app/app.py
  
 Aplikasi akan berjalan di `http://localhost:8501`
  
----
  
 ## 📊 Dataset
  
@@ -107,7 +101,6 @@ Dataset yang digunakan berisi informasi klinis pasien, seperti:
 - Kadar protein dan albumin
 - Enzim hati: SGPT, SGOT, Alkaline Phosphotase
 - Rasio albumin/globulin
----
  
 ## 🤖 Model Machine Learning
  
@@ -118,7 +111,6 @@ Model yang digunakan adalah **XGBoost Classifier** dengan pipeline yang mencakup
 3. **Pelatihan Model** — XGBoost dengan tuning hyperparameter
 4. **Evaluasi** — akurasi, precision, recall, F1-score, dan confusion matrix
 5. **Penyimpanan Model** — model disimpan menggunakan `joblib` untuk dipakai di aplikasi
----
- 
+
 ## 🌐 Demo Aplikasi
 👉 [https://liver-disease-predict.streamlit.app/](https://liver-disease-predict.streamlit.app/)
